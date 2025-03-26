@@ -3,10 +3,11 @@
     margin: 0;
     box-sizing: border-box;
     transform-style: preserve-3d;
+    backface-visibility: visible;
 }
 
 body {
-    background-color: #010101;
+    background-color: #cccccc;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -16,5 +17,5 @@ body {
 }
 
 #camera {
-    transform: perspective(1000px) translateZ(1000px) rotateX(90deg);
+    transform: perspective(1000px) translateY(150px) rotateX(90deg);
 }
