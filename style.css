@@ -19,3 +19,35 @@ body {
 #camera {
     transform: perspective(1000px) translateY(150px) rotateX(90deg);
 }
+
+
+/* - - - - - MAP - - - - - */
+#camera * {
+    position:absolute;
+}
+
+#floor {
+    width: 750px;
+}
+#roof {
+    width: 750px;
+    transform: translateZ(300px);
+}
+
+.wall {
+    transform: translateY(-150px) rotateX(-90deg);
+}
+#wall1 {
+    width: 750px;
+    height: 300px;
+    transform: translateZ(150px);
+}
+#wall2 {
+    
+}
+#wall3 {
+    
+}
+#wall4 {
+    
+}
