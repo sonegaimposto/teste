@@ -35,7 +35,14 @@ body {
 }
 
 .wall {
-    transform: translateZ(150px) rotateX(-90deg);
+    background-image: url(assets/map/wall.png);
+    background-repeat: repeat;
+    background-size: 300px;
+}
+.wall2 {
+    background-image: url(assets/map/wall2.png);
+    background-repeat: repeat;
+    background-size: 300px;
 }
 #wall1 {
     width: 450px;
