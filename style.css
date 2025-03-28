@@ -17,7 +17,7 @@ body {
 }
 
 #camera {
-    transform: perspective(1000px) translateY(150px) rotateX(90deg);
+    transform: perspective(1000px) translateX(0px) translateY(150px) translateZ(1000px) rotateX(90deg) rotateZ(0deg);
 }
 
 
@@ -35,19 +35,25 @@ body {
 }
 
 .wall {
-    transform: translateY(-150px) rotateX(-90deg);
+    transform: translateZ(150px) rotateX(-90deg);
 }
 #wall1 {
-    width: 750px;
+    width: 450px;
     height: 300px;
-    transform: translateZ(150px);
+    transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
 }
 #wall2 {
-    
+    width: 750px;
+    height: 300px;
+    transform: translateX(-375px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
 }
 #wall3 {
-    
+    width: 450px;
+    height: 300px;
+    transform: translateY(600px) translateZ(150px) rotateX(-90deg) rotateY(180deg);
 }
 #wall4 {
-    
+    width: 750px;
+    height: 300px;
+    transform: translateX(75px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
 }
