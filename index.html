@@ -9,35 +9,36 @@
     <title>Night Shift</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="assets/logo.png">
+    <script src="main.js" defer></script>
 
 </head>
 
 
 <body>
-    
     <div id="camera">
 
         <div id="map">
             <img src="assets/map/floor.png" id="floor">
 
-            <div id="wall1" class="wall">
-                <img src="assets/map/wall.png" class="walltexture1">
-                <img src="assets/map/window.png" class="window">
-                <img src="assets/map/wall.png" class="walltexture2">
+            <div id="wall1">
+                <div class="walltexture1 upperwall"></div>
+                <div class="window"></div>
+                <div class="walltexture1 bottomwall"></div>
             </div>
-            <div id="wall2" class="wall">
-                <img src="assets/map/wall2.png" class="walltexture1">
+            <div id="wall2" class="walltexture2">
                 <img src="assets/map/door.png">
             </div>
-            <div id="wall3" class="wall">
-                <img src="assets/map/wall2.png">
+            <div id="wall3" class="walltexture1">
             </div>
-            <div id="wall4" class="wall">
-                <img src="assets/map/wall2.png">
+            <div id="wall4" class="walltexture2">
             </div>
 
             <img src="assets/map/roof.png" id="roof">
         </div>
+
+    </div>
+
+    <div id="hand">
 
     </div>
 

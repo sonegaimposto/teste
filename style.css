@@ -17,7 +17,19 @@ body {
 }
 
 #camera {
-    transform: perspective(1000px) translateX(0px) translateY(150px) translateZ(1000px) rotateX(90deg) rotateZ(0deg);
+    position: relative;
+    transform: perspective(1000px) translateZ(1000px) rotateX(90deg);
+}
+@keyframes moving-animation {
+    0% {
+        top: 0%
+    }
+    50% {
+        top: -5%
+    }
+    100% {
+        top: 0%
+    }
 }
 
 
@@ -34,12 +46,12 @@ body {
     transform: translateZ(300px);
 }
 
-.wall {
+.walltexture1 {
     background-image: url(assets/map/wall.png);
     background-repeat: repeat;
-    background-size: 300px;
+    background-size: 450px;
 }
-.wall2 {
+.walltexture2 {
     background-image: url(assets/map/wall2.png);
     background-repeat: repeat;
     background-size: 300px;
@@ -48,6 +60,24 @@ body {
     width: 450px;
     height: 300px;
     transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
+}
+#wall1 .upperwall {
+    width: 450px;
+    height: 25px;
+}
+#wall1 .window {
+    width: 450px;
+    height: 200px;
+    background-image: url(assets/map/window.png);
+    background-repeat: repeat;
+    background-size: 450px;
+    transform: translateY(25px);
+    opacity: 0.3;
+}
+#wall1 .bottomwall {
+    width: 450px;
+    height: 75px;
+    transform: translateY(225px)
 }
 #wall2 {
     width: 750px;
