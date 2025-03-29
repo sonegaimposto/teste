@@ -33,19 +33,30 @@ body {
 }
 
 
+
+
+
 /* - - - - - MAP - - - - - */
 #camera * {
     position:absolute;
 }
 
 #floor {
-    width: 750px;
+    width: 1750px;
+    height: 1750px;
+    background-image: url(assets/map/floor.png);
+    background-repeat: repeat;
+    background-size: 250px;
+    transform: translate(0px,-400px);
 }
 #roof {
-    width: 750px;
+    width: 1750px;
+    height: 1750px;
+    background-image: url(assets/map/roof.png);
+    background-repeat: repeat;
+    background-size: 2w50px;
     transform: translateZ(300px);
 }
-
 .walltexture1 {
     background-image: url(assets/map/wall.png);
     background-repeat: repeat;
@@ -56,16 +67,26 @@ body {
     background-repeat: repeat;
     background-size: 300px;
 }
-#wall1 {
+
+
+
+
+
+/* - - - - SECURITY ROOM - - - - */
+#securityroom {
+    transform: translate(450px,450px);
+}
+
+#securityroom .wall1 {
     width: 450px;
     height: 300px;
     transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
 }
-#wall1 .upperwall {
+#securityroom .wall1 .upperwall {
     width: 450px;
     height: 25px;
 }
-#wall1 .window {
+#securityroom .wall1 .window {
     width: 450px;
     height: 200px;
     background-image: url(assets/map/window.png);
@@ -74,23 +95,65 @@ body {
     transform: translateY(25px);
     opacity: 0.3;
 }
-#wall1 .bottomwall {
+#securityroom .wall1 .bottomwall {
     width: 450px;
     height: 75px;
     transform: translateY(225px)
 }
-#wall2 {
+#securityroom .wall2 {
     width: 750px;
     height: 300px;
     transform: translateX(-375px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
 }
-#wall3 {
+#securityroom .wall2 .leftwall {
+    width: 45px;
+    height: 300px;
+}
+#securityroom .wall2 .door {
+    width: 200px;
+    height: 300px;
+    background-image: url(assets/map/door.png);
+    background-repeat: no-repeat;
+    transform: translateX(45px);
+}
+#securityroom .wall2 .rightwall {
+    width: 540px;
+    height: 300px;
+    transform: translateX(210px);
+}
+#securityroom .wall3 {
     width: 450px;
     height: 300px;
     transform: translateY(600px) translateZ(150px) rotateX(-90deg) rotateY(180deg);
 }
-#wall4 {
+#securityroom .wall4 {
     width: 750px;
     height: 300px;
     transform: translateX(75px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
+}
+
+
+
+
+
+/* - - - - - - - - */
+#corridors .wall1 {
+    width: 1350px;
+    height: 300px;
+    transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
+}
+#corridors .wall2 {
+    width: 1350px;
+    height: 300px;
+    transform: translateX(-675px) translateY(525px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
+}
+#corridors .wall3 {
+    width: 1350px;
+    height: 300px;
+    transform: translateY(1200px) translateZ(150px) rotateX(-90deg) rotateY(180deg);
+}
+#corridors .wall4 {
+    width: 1350px;
+    height: 300px;
+    transform: translateX(1075px) translateY(125px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
 }
