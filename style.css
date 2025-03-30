@@ -55,7 +55,7 @@ body {
     background-image: url(assets/map/roof.png);
     background-repeat: repeat;
     background-size: 2w50px;
-    transform: translateZ(300px);
+    transform: translateZ(300px) translate(0px,-400px);
 }
 .walltexture1 {
     background-image: url(assets/map/wall.png);
@@ -106,15 +106,23 @@ body {
     transform: translateX(-375px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
 }
 #securityroom .wall2 .leftwall {
-    width: 45px;
+    width: 195px;
     height: 300px;
+    transform: translateX(-150px);
 }
-#securityroom .wall2 .door {
+#securityroom .wall2 .door.closed {
     width: 200px;
     height: 300px;
     background-image: url(assets/map/door.png);
     background-repeat: no-repeat;
     transform: translateX(45px);
+}
+#securityroom .wall2 .door.open {
+    width: 200px;
+    height: 300px;
+    background-image: url(assets/map/door.png);
+    background-repeat: no-repeat;
+    transform: translateX(45px) translateY(-240px);
 }
 #securityroom .wall2 .rightwall {
     width: 540px;
@@ -130,6 +138,20 @@ body {
     width: 750px;
     height: 300px;
     transform: translateX(75px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
+}
+#securityroom .wall4 .leftwall {
+    width: 190px;
+    height: 300px;
+}
+#securityroom .wall4 .upperwall {
+    width: 120px;
+    height: 200px;
+    transform: translateX(190px);
+}
+#securityroom .wall4 .rightwall {
+    width: 440px;
+    height: 300px;
+    transform: translateX(310px);
 }
 
 
@@ -156,4 +178,9 @@ body {
     width: 1350px;
     height: 300px;
     transform: translateX(1075px) translateY(125px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
+}
+#corridors .wall5 {
+    width: 1750px;
+    height: 300px;
+    transform: translateY(-550px) translateZ(150px) rotateX(-90deg);
 }
