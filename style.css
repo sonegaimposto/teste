@@ -38,7 +38,7 @@ body {
 
 /* - - - - - MAP - - - - - */
 #camera * {
-    position:absolute;
+    position: fixed;
 }
 
 #floor {
@@ -124,6 +124,12 @@ body {
     background-repeat: no-repeat;
     transform: translateX(45px) translateY(-240px);
 }
+#securityroom .wall2 #doorbutton {
+    width: 75px;
+    height: 75px;
+    background-color: #fff;
+    transform: translateX(245px) translateY(120px);
+}
 #securityroom .wall2 .rightwall {
     width: 540px;
     height: 300px;
@@ -183,4 +189,25 @@ body {
     width: 1750px;
     height: 300px;
     transform: translateY(-550px) translateZ(150px) rotateX(-90deg);
+}
+
+
+
+
+
+/* - - - - - H A N D - - - - - */
+#hand {
+    position: fixed;
+    right: -270px;
+    bottom: -500px;
+    width: 800px;
+    height: 800px;
+    transform: scaleX(-1);
+    transition: 0.3s;
+}
+#hand.pointing {
+    background-image: url("assets/pointing.png");
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: bottom;
 }

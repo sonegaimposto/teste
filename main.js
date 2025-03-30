@@ -1,5 +1,6 @@
 // DECLARAR VARIAVEIS
 const camera = document.getElementById("camera");
+const hand = document.getElementById("hand");
 var rotate = 0;
 var x = 700;
 var y = 150;
@@ -9,9 +10,17 @@ var keys = [];
 var mouseX = 0;
 var mouseY = 0;
 var speed = 1.5;
-var playerPosition = "room"
-const door = document.getElementsByClassName("door");
-var canInteractDoor = false;
+var freeMove = true;
+
+var playerPosition = "room";
+
+const door = {
+    "element": document.getElementsByClassName("door"),
+    "doorButton": document.getElementById("doorbutton"),
+    "canInteract": false,
+    "interacting": false,
+    "isOpen": true
+}
 
 
 
@@ -37,49 +46,50 @@ document.addEventListener("mousemove", (event) => {
 
 // PLAYER CODE
 const playerCode = setInterval(() => {
-    // ROTATE
-    let rotating = false;
-    if (mouseX > 130 || mouseX < -130) {
-        rotate -= mouseX/400;
-        rotate = rotate > 360 ? 0 : rotate;
-        rotate = rotate < 0 ? 360 : rotate;
-        rotating = true;
-    }
 
     let moving = false;
-    let radians = rotate * (Math.PI / 180);
+    if (freeMove) {
+        // ROTATE
+        if (mouseX > 130 || mouseX < -130) {
+            rotate -= mouseX/400;
+            rotate = rotate > 360 ? 0 : rotate;
+            rotate = rotate < 0 ? 360 : rotate;
+        }
 
-    // MOVE
-    if (keys.includes("KeyW")) {
-        x -= Math.sin(radians) * (speed * 1.5);
-        z += Math.cos(radians) * (speed * 1.5);
-        moving = true;
-    };
-    if (keys.includes("KeyA")) {
-        radians = (rotate + 90) * (Math.PI / 180);
-        x -= Math.sin(radians) * speed;
-        z += Math.cos(radians) * speed;
-        moving = true;
-    };
-    if (keys.includes("KeyS")) {
-        radians = (rotate + 180) * (Math.PI / 180);
-        x -= Math.sin(radians) * 1;
-        z += Math.cos(radians) * 1;
-        moving = true;
-    };
-    if (keys.includes("KeyD")) {
-        radians = (rotate - 90) * (Math.PI / 180);
-        x -= Math.sin(radians) * speed;
-        z += Math.cos(radians) * speed;
-        moving = true;
-    };
+        
+        let radians = rotate * (Math.PI / 180);
+
+        // MOVE
+        if (keys.includes("KeyW")) {
+            x -= Math.sin(radians) * (speed * 1.5);
+            z += Math.cos(radians) * (speed * 1.5);
+            moving = true;
+        };
+        if (keys.includes("KeyA")) {
+            radians = (rotate + 90) * (Math.PI / 180);
+            x -= Math.sin(radians) * speed;
+            z += Math.cos(radians) * speed;
+            moving = true;
+        };
+        if (keys.includes("KeyS")) {
+            radians = (rotate + 180) * (Math.PI / 180);
+            x -= Math.sin(radians) * 1;
+            z += Math.cos(radians) * 1;
+            moving = true;
+        };
+        if (keys.includes("KeyD")) {
+            radians = (rotate - 90) * (Math.PI / 180);
+            x -= Math.sin(radians) * speed;
+            z += Math.cos(radians) * speed;
+            moving = true;
+        };
+    }
 
     // UPDATE CAMERA
-    if (moving || rotating) {
-        camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
-    }
+    camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
+
     // MOVING ANIMATION
-    if (moving) {
+    if (moving && freeMove) {
         camera.style.animation = "moving-animation 0.7s infinite"
     } else {
         camera.style.animation = ""
@@ -99,11 +109,13 @@ const playerCode = setInterval(() => {
         }
     }
     // DOOR 
-    if (x > 500 && x < 625 && z > -1000 && z < -825) {
-        console.log("caninteractdoor")
+    if (x > 500 && x < 625 && z > -1000 && z < -800) {
+        door.canInteract = true;
+    } else {
+        door.canInteract = false;
     }
     
-}, 14);
+}, 15);
 camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
 
 
@@ -118,3 +130,45 @@ camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000
 // AUDIOS
 const ambience = new Audio("assets/audio/ambience.mp3");
 ambience.volume = 0.2;
+
+
+
+
+
+// DOOR SYSTEM
+door.doorButton.addEventListener("click", event => {
+    if (door.canInteract && door.interacting == false) {
+        
+        // ANIMAÇÃO
+        door.interacting = true;
+        freeMove = false;
+        camera.style.transition = "0.5s";
+        x = 575;
+        y = 140;
+        z = -920;
+        rotate = 110;
+        setTimeout(() => {
+            hand.style.bottom = "0px";
+            hand.classList = "pointing";
+        }, 600);
+
+        // SAIR
+        let exitDoorButton = function (event) {
+            if (event.code == "KeyS") {
+                x = 595;
+                y = 150;
+                z = -910;
+                rotate = 90;
+                hand.style.bottom = "-500px";
+                hand.classList = "";
+                setInterval(() => {
+                    door.interacting = false;
+                    freeMove = true;
+                    camera.style.transition = "";
+                    document.removeEventListener("keydown", exitDoorButton);
+                }, 700);
+            }
+        };
+        document.addEventListener("keydown", exitDoorButton);
+    }
+})
