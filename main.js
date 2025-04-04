@@ -1,6 +1,7 @@
 // DECLARAR VARIAVEIS
 const camera = document.getElementById("camera");
 const hand = document.getElementById("hand");
+const flashlight = document.getElementById("flashlight");
 var rotate = 0;
 var x = 700;
 var y = 150;
@@ -15,11 +16,12 @@ var freeMove = true;
 var playerPosition = "room";
 
 const door = {
-    "element": document.getElementsByClassName("door"),
+    "element": document.getElementById("door"),
     "doorButton": document.getElementById("doorbutton"),
     "canInteract": false,
     "interacting": false,
-    "isOpen": true
+    "isOpen": true,
+    "inCooldown": false
 }
 
 
@@ -50,8 +52,8 @@ const playerCode = setInterval(() => {
     let moving = false;
     if (freeMove) {
         // ROTATE
-        if (mouseX > 130 || mouseX < -130) {
-            rotate -= mouseX/400;
+        if (mouseX > 120 || mouseX < -120) {
+            rotate -= mouseX/600;
             rotate = rotate > 360 ? 0 : rotate;
             rotate = rotate < 0 ? 360 : rotate;
         }
@@ -109,13 +111,13 @@ const playerCode = setInterval(() => {
         }
     }
     // DOOR 
-    if (x > 500 && x < 625 && z > -1000 && z < -800) {
+    if (x > 500 && x < 625 && z > -1050 && z < -800) {
         door.canInteract = true;
     } else {
         door.canInteract = false;
     }
     
-}, 15);
+}, 10);
 camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
 
 
@@ -128,8 +130,23 @@ camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000
 
 
 // AUDIOS
-const ambience = new Audio("assets/audio/ambience.mp3");
-ambience.volume = 0.2;
+const sounds = {
+    "ambience": new Audio("assets/audio/ambience.mp3"),
+    "doorsound": new Audio("assets/audio/doorsound.mp3"),
+    "alarm": new Audio("assets/audio/alarm.mp3"),
+    "animatronicdoor": new Audio("assets/audio/animatronicinthedoor.mp3"),
+    "flashlight": new Audio("assets/audio/flashlightbutton.mp3"),
+    "windowlight": new Audio("assets/audio/windowlight.mp3"),
+}
+sounds.ambience.volume = 0.2;
+sounds.ambience.loop = true;
+sounds.doorsound.volume = 1;
+sounds.alarm.volume = 1;
+sounds.alarm.loop = true;
+sounds.animatronicdoor.volume = 1;
+sounds.flashlight.volume = 1;
+sounds.windowlight.volume = 1;
+sounds.windowlight.loop = true;
 
 
 
@@ -137,6 +154,7 @@ ambience.volume = 0.2;
 
 // DOOR SYSTEM
 door.doorButton.addEventListener("click", event => {
+
     if (door.canInteract && door.interacting == false) {
         
         // ANIMAÇÃO
@@ -150,25 +168,88 @@ door.doorButton.addEventListener("click", event => {
         setTimeout(() => {
             hand.style.bottom = "0px";
             hand.classList = "pointing";
+            flashlight.style.bottom = "-150px";
+            document.addEventListener("keydown", exitDoorButton);
+            flashlight.addEventListener("click", doorFlashlight);
+            hand.addEventListener("click", closeDoor);
         }, 600);
 
-        // SAIR
+        // Evento de sair da porta
         let exitDoorButton = function (event) {
             if (event.code == "KeyS") {
                 x = 595;
                 y = 150;
                 z = -910;
                 rotate = 90;
-                hand.style.bottom = "-500px";
+                hand.style.bottom = "-600px";
                 hand.classList = "";
-                setInterval(() => {
+                flashlight.style.bottom = "-600px";
+                setTimeout(() => {
                     door.interacting = false;
                     freeMove = true;
-                    camera.style.transition = "";
+                    camera.style.transition = "0s";
                     document.removeEventListener("keydown", exitDoorButton);
+                    flashlight.removeEventListener("click", doorFlashlight);
+                    hand.removeEventListener("click", closeDoor);
                 }, 700);
             }
         };
-        document.addEventListener("keydown", exitDoorButton);
+
+        // Evento de ligar a lanterna
+        let doorFlashlight = function (event) {
+            lanterna.style.animation = "flashlight-click 0.2s";
+            sounds.flashlight.play();
+        };
+
+        // Evento de fechar a porta
+        let closeDoor = function (event) {
+            if (door.isOpen && !door.inCooldown) {
+
+                //porta
+                door.isOpen = false;
+                door.inCooldown = true;
+                door.element.classList = "closed";
+                door.doorButton.classList = "on";
+                sounds.doorsound.play();
+
+                //animação mao
+                hand.classList = "punching";
+                hand.style.animation = "punch-button 1s";
+
+                //bloquear eventos
+                document.removeEventListener("keydown", exitDoorButton);
+                flashlight.removeEventListener("click", doorFlashlight);
+
+                //ativar evento de sair depois da animação da mao
+                setTimeout(() => {
+                    hand.classList = "pointing";
+                    hand.style.animation = "";
+                    document.addEventListener("keydown", exitDoorButton);
+                }, 1000)
+                
+                //abrir a porta dps de 5 segundos
+                setTimeout(() => {
+                    door.isOpen = true;
+                    door.element.classList = "open";
+                    door.doorButton.classList = "off";
+                    sounds.doorsound.play();
+                    flashlight.addEventListener("click", doorFlashlight);
+                }, 5000);
+
+                //cooldown porta
+                setTimeout(() => {
+                    door.inCooldown = false
+                }, 8000)
+
+            }
+        };
+
     }
+
 })
+
+
+
+
+
+sounds.ambience.play();

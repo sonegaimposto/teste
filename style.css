@@ -19,6 +19,7 @@ body {
 #camera {
     position: relative;
     transform: perspective(1000px) translateZ(1000px) rotateX(90deg);
+    transition: 0s;
 }
 @keyframes moving-animation {
     0% {
@@ -86,6 +87,13 @@ body {
     width: 450px;
     height: 25px;
 }
+#securityroom .wall1 .windowshadow {
+    width: 450px;
+    height: 200px;
+    background-color: #000;
+    transform: translateY(25px);
+    opacity: 0.95;
+}
 #securityroom .wall1 .window {
     width: 450px;
     height: 200px;
@@ -110,24 +118,41 @@ body {
     height: 300px;
     transform: translateX(-150px);
 }
-#securityroom .wall2 .door.closed {
+#securityroom .wall2 #doorshadow {
+    width: 200px;
+    height: 300px;
+    background-color: #000;
+    opacity: 0.95;
+    transform: translateX(45px);
+}
+#securityroom .wall2 #door.closed {
     width: 200px;
     height: 300px;
     background-image: url(assets/map/door.png);
     background-repeat: no-repeat;
     transform: translateX(45px);
+    transition: 0.2s;
 }
-#securityroom .wall2 .door.open {
+#securityroom .wall2 #door.open {
     width: 200px;
     height: 300px;
     background-image: url(assets/map/door.png);
     background-repeat: no-repeat;
     transform: translateX(45px) translateY(-240px);
+    transition: 0.3s;
 }
-#securityroom .wall2 #doorbutton {
+#securityroom .wall2 #doorbutton.on {
     width: 75px;
     height: 75px;
-    background-color: #fff;
+    background-image: url(assets/map/buttonon.png);
+    background-size: 75px;
+    transform: translateX(245px) translateY(120px);
+}
+#securityroom .wall2 #doorbutton.off {
+    width: 75px;
+    height: 75px;
+    background-image: url(assets/map/buttonoff.png);
+    background-size: 75px;
     transform: translateX(245px) translateY(120px);
 }
 #securityroom .wall2 .rightwall {
@@ -199,7 +224,7 @@ body {
 #hand {
     position: fixed;
     right: -270px;
-    bottom: -500px;
+    bottom: -600px;
     width: 800px;
     height: 800px;
     transform: scaleX(-1);
@@ -210,4 +235,52 @@ body {
     background-size: 800px;
     background-repeat: no-repeat;
     background-position: bottom;
+}
+#hand.punching {
+    background-image: url("assets/punching.png");
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+#flashlight {
+    position: fixed;
+    left: -270px;
+    bottom: -600px;
+    width: 800px;
+    height: 800px;
+    transform: scaleX(-1);
+    transition: 0.3s;
+    background-image: url("assets/flashlight.png");
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+@keyframes punch-button {
+    0% {
+        right: -150px;
+        scale: 1;
+        transition: ease-in;
+    }
+    40% {
+        right: -150px;
+        scale: 0.8;
+        transition: ease-in-out;
+    }
+    45% {
+        scale: 1;
+        transition: ease-in;
+        bottom: 0;
+    }
+    70% {
+        right: -150px;
+        bottom: -600px;
+    }
+    80% {
+        right: -270px;
+        bottom: -600px;
+        transition: ease-in-out;
+    }
+    100% {
+        bottom: 0;
+    }
 }
