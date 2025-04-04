@@ -17,11 +17,22 @@ var playerPosition = "room";
 
 const door = {
     "element": document.getElementById("door"),
+    "shadow": document.getElementById("doorshadow"),
     "doorButton": document.getElementById("doorbutton"),
     "canInteract": false,
     "interacting": false,
     "isOpen": true,
-    "inCooldown": false
+    "inCooldown": false,
+    "flashlightIsON": false,
+    "flashlightCooldown": false
+}
+
+const corridors = {
+    "wall1": document.getElementById("corridors").children[0],
+    "wall2": document.getElementById("corridors").children[1],
+    "wall3": document.getElementById("corridors").children[2],
+    "wall4": document.getElementById("corridors").children[3],
+    "wall5": document.getElementById("corridors").children[4],
 }
 
 
@@ -51,7 +62,7 @@ const playerCode = setInterval(() => {
 
     let moving = false;
     if (freeMove) {
-        // ROTATE
+        // Virar a camera
         if (mouseX > 120 || mouseX < -120) {
             rotate -= mouseX/600;
             rotate = rotate > 360 ? 0 : rotate;
@@ -61,7 +72,7 @@ const playerCode = setInterval(() => {
         
         let radians = rotate * (Math.PI / 180);
 
-        // MOVE
+        // Andar
         if (keys.includes("KeyW")) {
             x -= Math.sin(radians) * (speed * 1.5);
             z += Math.cos(radians) * (speed * 1.5);
@@ -90,14 +101,14 @@ const playerCode = setInterval(() => {
     // UPDATE CAMERA
     camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
 
-    // MOVING ANIMATION
+    // Animação de andar
     if (moving && freeMove) {
         camera.style.animation = "moving-animation 0.7s infinite"
     } else {
         camera.style.animation = ""
     }
 
-    // ROOM COLISION 
+    // Colisão da sala
     if (playerPosition == "room") {
         if (x < 470) {
             x = 470;
@@ -110,7 +121,7 @@ const playerCode = setInterval(() => {
             z = -1175;
         }
     }
-    // DOOR 
+    // Hitbox pra interagir com a porta 
     if (x > 500 && x < 625 && z > -1050 && z < -800) {
         door.canInteract = true;
     } else {
@@ -174,6 +185,7 @@ door.doorButton.addEventListener("click", event => {
             hand.addEventListener("click", closeDoor);
         }, 600);
 
+
         // Evento de sair da porta
         let exitDoorButton = function (event) {
             if (event.code == "KeyS") {
@@ -195,16 +207,50 @@ door.doorButton.addEventListener("click", event => {
             }
         };
 
+
         // Evento de ligar a lanterna
         let doorFlashlight = function (event) {
-            lanterna.style.animation = "flashlight-click 0.2s";
-            sounds.flashlight.play();
+            if (!door.flashlightCooldown) {
+
+                //lanterna
+                door.flashlightCooldown = true;
+                door.flashlightIsON = true;
+                flashlight.style.animation = "flashlight-click 0.3s";
+                sounds.flashlight.play();
+                //bloquear eventos
+                document.removeEventListener("keydown", exitDoorButton);
+                hand.removeEventListener("click", closeDoor);
+
+                //luz
+                door.shadow.style.opacity = 0.3;
+                corridors.wall2.classList.remove("shadowed");
+                corridors.wall3.classList.remove("shadowed");
+                setTimeout(() => {
+                    door.flashlightIsON = false;
+                    door.shadow.style.opacity = 0.95;
+                    corridors.wall2.classList.add("shadowed");
+                    corridors.wall3.classList.add("shadowed");
+                }, 100);
+
+
+                //ativar eventos e resetar animação depois da animação acabar
+                setTimeout(() => {
+                    flashlight.style.animation = "";
+                    document.addEventListener("keydown", exitDoorButton);
+                    hand.addEventListener("click", closeDoor);
+                }, 300);
+
+                //cooldown
+                setTimeout(() => {
+                    door.flashlightCooldown = false;
+                }, 3000);
+            }
         };
+
 
         // Evento de fechar a porta
         let closeDoor = function (event) {
             if (door.isOpen && !door.inCooldown) {
-
                 //porta
                 door.isOpen = false;
                 door.inCooldown = true;
@@ -240,12 +286,10 @@ door.doorButton.addEventListener("click", event => {
                 setTimeout(() => {
                     door.inCooldown = false
                 }, 8000)
-
             }
         };
 
     }
-
 })
 
 
