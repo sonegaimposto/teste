@@ -118,14 +118,14 @@ body {
     width: 450px;
     height: 25px;
 }
-#securityroom .wall1 .windowshadow {
+#securityroom .wall1 #windowshadow {
     width: 450px;
     height: 200px;
     background-color: #000;
     transform: translateY(25px);
     opacity: 0.95;
 }
-#securityroom .wall1 .window {
+#securityroom .wall1 #window {
     width: 450px;
     height: 200px;
     background-image: url(assets/map/window.png);
@@ -191,6 +191,22 @@ body {
     height: 300px;
     transform: translateX(210px);
 }
+#securityroom .wall2 #tv {
+    width: 225px;
+    height: 120px;
+    background-image: url(assets/map/glitch.gif);
+    background-size: 225px;
+    background-repeat: no-repeat;
+    transform: translateX(450px) translateY(40px) translateZ(8px);
+}
+#securityroom .wall2 #tv div {
+    width: 230px;
+    height: 150px;
+    background-image: url(assets/map/tv.png);
+    background-size: 230px;
+    background-repeat: no-repeat;
+    transform: translateX(-2.5px) translateY(-2.5px);
+}
 #securityroom .wall3 {
     width: 450px;
     height: 300px;
@@ -255,11 +271,44 @@ body {
     height: 120px;
     transform: translateX(-190px) translateY(39.9px) translateZ(-250px) rotateX(90deg) rotateZ(90deg);
 }
-#securityroom .wall4 #duct .shadow {
+#securityroom .wall4 #duct .duct5 {
     width: 120px;
     height: 100px;
     background-color: #000;
     transform: translateZ(-500px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow {
+    width: 120px;
+    height: 100px;
+    background-color: #000;
+    opacity: 0.6;
+}
+#securityroom .wall4 #duct #ductshadows .shadow1 {
+    transform: translateZ(-50px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow2 {
+    transform: translateZ(-100px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow3 {
+    transform: translateZ(-150px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow4 {
+    transform: translateZ(-200px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow5 {
+    transform: translateZ(-250px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow6 {
+    transform: translateZ(-300px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow7 {
+    transform: translateZ(-350px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow8 {
+    transform: translateZ(-400px);
+}
+#securityroom .wall4 #duct #ductshadows .shadow9 {
+    transform: translateZ(-450px);
 }
 
 

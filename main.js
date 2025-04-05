@@ -3,6 +3,7 @@ const camera = document.getElementById("camera");
 const hand = document.getElementById("hand");
 const flashlight = document.getElementById("flashlight");
 var rotate = 0;
+var lean = 0;
 var x = 700;
 var y = 150;
 var z = -1000;
@@ -25,6 +26,35 @@ const door = {
     "inCooldown": false,
     "flashlightIsON": false,
     "flashlightCooldown": false
+}
+
+const duct = {
+    "element": document.getElementById("duct"),
+    "shadows": [
+        document.getElementById("ductshadows").children[0],
+        document.getElementById("ductshadows").children[1],
+        document.getElementById("ductshadows").children[2],
+        document.getElementById("ductshadows").children[3],
+        document.getElementById("ductshadows").children[4],
+        document.getElementById("ductshadows").children[5],
+        document.getElementById("ductshadows").children[6],
+        document.getElementById("ductshadows").children[7],
+        document.getElementById("ductshadows").children[8]
+    ],
+    "canInteract": false,
+    "interacting": false,
+    "flashlightIsON": false,
+    "flashlightCooldown": false
+}
+
+const frontWindow = {
+    "element": document.getElementById("window"),
+    "shadow": document.getElementById("windowshadow"),
+    "windowButton": document.getElementById("windowbutton"),
+    "canInteract": false,
+    "interacting": false,
+    "lightsIsON": false,
+    "lightsCooldown": false
 }
 
 const corridors = {
@@ -99,7 +129,7 @@ const playerCode = setInterval(() => {
     }
 
     // UPDATE CAMERA
-    camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
+    camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateY(${lean}deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
 
     // Animação de andar
     if (moving && freeMove) {
@@ -127,9 +157,21 @@ const playerCode = setInterval(() => {
     } else {
         door.canInteract = false;
     }
+    // Hitbox pra interagir com o duto 
+    if (x > 700 && x < 875 && z > -875 && z < -600) {
+        duct.canInteract = true;
+    } else {
+        duct.canInteract = false;
+    }
+    // Hitbox pra interagir com a luz da janela 
+    if (x > 700 && x < 875 && z > -750 && z < -490) {
+        frontWindow.canInteract = true;
+    } else {
+        frontWindow.canInteract = false;
+    }
     
 }, 10);
-camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
+camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000px) rotateX(90deg) rotateY(${lean}deg) rotateZ(${rotate}deg) translate(${-(x)}px, ${z}px)`;
 
 
 
@@ -166,7 +208,7 @@ sounds.windowlight.loop = true;
 // DOOR SYSTEM
 door.doorButton.addEventListener("click", event => {
 
-    if (door.canInteract && door.interacting == false) {
+    if (door.canInteract && !door.interacting) {
         
         // ANIMAÇÃO
         door.interacting = true;
@@ -230,8 +272,7 @@ door.doorButton.addEventListener("click", event => {
                     door.shadow.style.opacity = 0.95;
                     corridors.wall2.classList.add("shadowed");
                     corridors.wall3.classList.add("shadowed");
-                }, 100);
-
+                }, 150);
 
                 //ativar eventos e resetar animação depois da animação acabar
                 setTimeout(() => {
@@ -260,7 +301,7 @@ door.doorButton.addEventListener("click", event => {
 
                 //animação mao
                 hand.classList = "punching";
-                hand.style.animation = "punch-button 1s";
+                hand.style.animation = "punch-button 0.8s";
 
                 //bloquear eventos
                 document.removeEventListener("keydown", exitDoorButton);
@@ -269,6 +310,8 @@ door.doorButton.addEventListener("click", event => {
                 //ativar evento de sair depois da animação da mao
                 setTimeout(() => {
                     hand.classList = "pointing";
+                }, 600)
+                setTimeout(() => {
                     hand.style.animation = "";
                     document.addEventListener("keydown", exitDoorButton);
                 }, 1000)
@@ -279,13 +322,212 @@ door.doorButton.addEventListener("click", event => {
                     door.element.classList = "open";
                     door.doorButton.classList = "off";
                     sounds.doorsound.play();
-                    flashlight.addEventListener("click", doorFlashlight);
+                    if (door.interacting) {
+                        flashlight.addEventListener("click", doorFlashlight);
+                    }
                 }, 5000);
 
                 //cooldown porta
                 setTimeout(() => {
                     door.inCooldown = false
                 }, 8000)
+            }
+        };
+
+    }
+})
+
+
+
+
+
+// DUCT SYSTEM
+duct.element.addEventListener("click", event => {
+
+    if (duct.canInteract && !duct.interacting) {
+
+        // ANIMAÇÃO
+        duct.interacting = true;
+        freeMove = false;
+        camera.style.transition = "0.5s";
+        x = 825;
+        y = 80;
+        z = -775;
+        rotate = 290;
+        lean = 20;
+        setTimeout(() => {
+            flashlight.style.bottom = "-150px";
+            document.addEventListener("keydown", exitDuct);
+            flashlight.addEventListener("click", ductFlashlight);
+        }, 600);
+
+
+        // Evento de sair do duto
+        let exitDuct = function (event) {
+            if (event.code == "KeyS") {
+                x = 750;
+                y = 150;
+                z = -700;
+                rotate = 270;
+                lean = 0;
+                flashlight.style.bottom = "-600px";
+                setTimeout(() => {
+                    duct.interacting = false;
+                    freeMove = true;
+                    camera.style.transition = "0s";
+                    document.removeEventListener("keydown", exitDuct);
+                    flashlight.removeEventListener("click", ductFlashlight);
+                }, 700);
+            }
+        };
+
+
+        // Evento de ligar a lanterna
+        let ductFlashlight = function (event) {
+            if (!duct.flashlightCooldown) {
+
+                //lanterna
+                duct.flashlightCooldown = true;
+                duct.flashlightIsON = true;
+                flashlight.style.animation = "flashlight-click 0.3s";
+                sounds.flashlight.play();
+                //bloquear eventos
+                document.removeEventListener("keydown", exitDuct);
+
+                //luz
+                duct.shadows.forEach((element, index) => {
+                    if (index < 4) {
+                        element.style.opacity = 0;
+                    } else {
+                        element.style.opacity = 0.25
+                    }
+                })
+                setTimeout(() => {
+                    duct.flashlightIsON = false;
+                    duct.shadows.forEach((element) => {
+                        element.style.opacity = 0.6;
+                    })
+                }, 150);
+
+                //ativar eventos e resetar animação depois da animação acabar
+                setTimeout(() => {
+                    flashlight.style.animation = "";
+                    document.addEventListener("keydown", exitDuct);
+                }, 300);
+
+                //cooldown
+                setTimeout(() => {
+                    duct.flashlightCooldown = false;
+                }, 3000);
+            }
+        };
+
+    }
+})
+
+
+
+
+
+// WINDOW SYSTEM
+frontWindow.windowButton.addEventListener("click", event => {
+
+    if (frontWindow.canInteract) {
+
+        // ANIMAÇÃO
+        frontWindow.interacting = true;
+        freeMove = false;
+        camera.style.transition = "0.5s";
+        x = 875;
+        z = -625;
+        rotate = 370;
+        setTimeout(() => {
+            hand.style.bottom = "0px";
+            hand.classList = "pointing";
+            document.addEventListener("keydown", exitWindow);
+            hand.addEventListener("click", windowLights);
+        }, 600);
+
+
+        // Evento de sair do duto
+        let exitWindow = function (event) {
+            if (event.code == "KeyS") {
+                x = 860;
+                z = -675;
+                rotate = 380;
+                hand.style.bottom = "-600px";
+                hand.classList = "";
+                setTimeout(() => {
+                    frontWindow.interacting = false;
+                    freeMove = true;
+                    camera.style.transition = "0s";
+                    document.removeEventListener("keydown", exitWindow);
+                    hand.removeEventListener("click", windowLights);
+                    rotate = 20;
+                }, 700);
+            }
+        };
+
+
+        // Evento de ligar as luzes
+        let windowLights = function (event) {
+            if (!frontWindow.lightsCooldown && !frontWindow.lightsIsON) {
+
+                //janela
+                frontWindow.lightsCooldown = true;
+                frontWindow.lightsIsON = true;
+                sounds.windowlight.play();
+
+                //animação luz piscando
+                let loop = function() {
+                    setTimeout(() => {
+                        if (Math.floor(Math.random() * 4 + 1) == 4) {
+                            frontWindow.shadow.style.opacity = 0.95;
+                            corridors.wall1.classList.remove("shadowed");
+                            corridors.wall2.classList.remove("shadowed");
+                        } else {
+                            frontWindow.shadow.style.opacity = 0.2;
+                            corridors.wall1.classList.add("shadowed");
+                            corridors.wall2.classList.add("shadowed");
+                        }
+                        if (frontWindow.lightsIsON) {
+                            loop();
+                        } else {
+                            frontWindow.shadow.style.opacity = 0.95;
+                            corridors.wall1.classList.add("shadowed");
+                            corridors.wall2.classList.add("shadowed");
+                        }
+                    }, 25);
+                }
+                loop();
+                setTimeout(() => {
+                    frontWindow.lightsIsON = false;
+                    frontWindow.shadow.style.opacity = 0.95;
+                    corridors.wall1.classList.add("shadowed");
+                    corridors.wall2.classList.add("shadowed");
+                    sounds.windowlight.pause();
+                }, 5000);
+
+                //animação mao
+                hand.classList = "punching";
+                hand.style.animation = "punch-button 0.8s";
+
+                //bloquear eventos
+                document.removeEventListener("keydown", exitWindow);
+
+                //ativar evento de sair depois da animação da mao
+                setTimeout(() => {
+                    hand.classList = "pointing";
+                }, 600);
+                setTimeout(() => {
+                    hand.style.animation = "";
+                    document.addEventListener("keydown", exitWindow);
+                }, 1000);
+
+                //cooldown
+                setTimeout(() => {
+                    frontWindow.lightsCooldown = false;
+                }, 10000);
             }
         };
 
