@@ -185,14 +185,17 @@ camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000
 // AUDIOS
 const sounds = {
     "ambience": new Audio("assets/audio/ambience.mp3"),
+    "ambienceLights": new Audio("assets/audio/ambiencelights.mp3"),
     "doorsound": new Audio("assets/audio/doorsound.mp3"),
     "alarm": new Audio("assets/audio/alarm.mp3"),
     "animatronicdoor": new Audio("assets/audio/animatronicinthedoor.mp3"),
     "flashlight": new Audio("assets/audio/flashlightbutton.mp3"),
     "windowlight": new Audio("assets/audio/windowlight.mp3"),
 }
-sounds.ambience.volume = 0.2;
+sounds.ambience.volume = 0.25;
 sounds.ambience.loop = true;
+sounds.ambienceLights.volume = 0.15;
+sounds.ambienceLights.loop = true;
 sounds.doorsound.volume = 1;
 sounds.alarm.volume = 1;
 sounds.alarm.loop = true;
@@ -539,3 +542,4 @@ frontWindow.windowButton.addEventListener("click", event => {
 
 
 sounds.ambience.play();
+sounds.ambienceLights.play();
