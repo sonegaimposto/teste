@@ -1,423 +1,67 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    transform-style: preserve-3d;
-    backface-visibility: visible;
-}
-
-body {
-    background-color: #cccccc;
+#loadingscreen {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
     width: 100vw;
     height: 100vh;
+    background-color: #000;
+    z-index: 100;
+    opacity: 0;
+}
+#loadingscreen h2, #loadingscreen h3 {
+    width: 100vw;
+    margin: 2vh 0;
+    text-align: center;
+    color: #fff;
+    font-size: 50px;
+    font-weight: 100;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 8px;
+    word-spacing: 10px;
+}
+#loadingscreen h3 {
+    font-size: 35px;
+}
+
+#menuscreen {
+    position: fixed;
+    display: grid;
+    grid-template-columns: 25vw 75vw;
+    grid-template-rows: 50vh 50vh;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://images.squarespace-cdn.com/content/v1/5873e98f9f74569e1139233c/1484690553590-368MF3HJO6HPLJV8AMB7/tumblr_nl4c5vAawx1slaspwo1_500.gif");
+    background-size: 100vw;
+    z-index: 150;
+}
+#menuscreen h1 {
+    margin-top: 3vh;
+    text-align: center;
+    color: rgb(107, 16, 16);
+    font-size: 150px;
+    font-weight: 300;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 20px;
+}
+#menuscreen button {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    width: 25vw;
+    margin: 6vh 0;
+    border: none;
+    background-color: transparent;
 }
-
-#camera {
-    position: relative;
-    transform: perspective(1000px) translateZ(1000px) rotateX(90deg);
-    transition: 0s;
+#menuscreen h2, #menuscreen h3 {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 100;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 8px;
+    word-spacing: 10px;
 }
-@keyframes moving-animation {
-    0% {
-        top: 0%
-    }
-    50% {
-        top: -5%
-    }
-    100% {
-        top: 0%
-    }
-}
-@keyframes spin {
-    from {
-        transform: rotateZ(0deg);
-    }
-    to {
-        transform: rotateZ(360deg);
-    }
-}
-
-
-
-
-
-/* - - - - - MAP - - - - - */
-#camera * {
-    position: fixed;
-}
-
-#floor {
-    width: 1750px;
-    height: 1750px;
-    background-image: url(assets/map/floor.png);
-    background-repeat: repeat;
-    background-size: 250px;
-    transform: translate(0px,-400px);
-}
-#roof {
-    width: 1750px;
-    height: 1750px;
-    background-image: url(assets/map/roof.png);
-    background-repeat: repeat;
-    background-size: 250px;
-    transform: translateZ(300px) translate(0px,-400px);
-}
-#rooffan {
-    width: 150px;
-    height: 150px;
-    transform: translateZ(290px) translate(600px,700px);
-}
-#rooffan div {
-    width: 150px;
-    height: 150px;
-    background-image: url(assets/map/rooffan.png);
-    background-repeat: repeat;
-    background-size: 150px;
-    animation: spin 0.5s infinite linear;
-}
-.walltexture1 {
-    background-image: url(assets/map/wall.png);
-    background-repeat: repeat;
-    background-size: 450px;
-}
-.walltexture1.shadowed {
-    background-image: url(assets/map/wallshadow.png);
-    background-repeat: repeat;
-    background-size: 450px;
-}
-.walltexture2 {
-    background-image: url(assets/map/wall2.png);
-    background-repeat: repeat;
-    background-size: 300px;
-}
-.walltexture2.shadowed {
-    background-image: url(assets/map/wall2shadow.png);
-    background-repeat: repeat;
-    background-size: 300px;
-}
-
-
-
-
-
-/* - - - - SECURITY ROOM - - - - */
-#securityroom {
-    transform: translate(450px,450px);
-}
-
-#securityroom .wall1 {
-    width: 450px;
-    height: 300px;
-    transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
-}
-#securityroom .wall1 .upperwall {
-    width: 450px;
-    height: 25px;
-}
-#securityroom .wall1 #windowshadow {
-    width: 450px;
-    height: 200px;
-    background-color: #000;
-    transform: translateY(25px);
-    opacity: 0.95;
-}
-#securityroom .wall1 #window {
-    width: 450px;
-    height: 200px;
-    background-image: url(assets/map/window.png);
-    background-repeat: repeat;
-    background-size: 450px;
-    transform: translateY(25px);
-    opacity: 0.3;
-}
-#securityroom .wall1 .bottomwall {
-    width: 450px;
-    height: 75px;
-    transform: translateY(225px)
-}
-#securityroom .wall2 {
-    width: 750px;
-    height: 300px;
-    transform: translateX(-375px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
-}
-#securityroom .wall2 .leftwall {
-    width: 195px;
-    height: 300px;
-    transform: translateX(-150px);
-}
-#securityroom .wall2 #doorshadow {
-    width: 200px;
-    height: 300px;
-    background-color: #000;
-    opacity: 0.98;
-    transform: translateX(45px);
-}
-#securityroom .wall2 #door.closed {
-    width: 200px;
-    height: 300px;
-    background-image: url(assets/map/door.png);
-    background-repeat: no-repeat;
-    transform: translateX(45px);
-    transition: 0.2s;
-}
-#securityroom .wall2 #door.open {
-    width: 200px;
-    height: 300px;
-    background-image: url(assets/map/door.png);
-    background-repeat: no-repeat;
-    transform: translateX(45px) translateY(-240px);
-    transition: 0.3s;
-}
-#securityroom .wall2 #doorbutton.on {
-    width: 75px;
-    height: 75px;
-    background-image: url(assets/map/buttonon.png);
-    background-size: 75px;
-    transform: translateX(245px) translateY(120px);
-}
-#securityroom .wall2 #doorbutton.off {
-    width: 75px;
-    height: 75px;
-    background-image: url(assets/map/buttonoff.png);
-    background-size: 75px;
-    transform: translateX(245px) translateY(120px);
-}
-#securityroom .wall2 .rightwall {
-    width: 540px;
-    height: 300px;
-    transform: translateX(210px);
-}
-#securityroom .wall2 #tv {
-    width: 225px;
-    height: 120px;
-    background-image: url(assets/map/glitch.gif);
-    background-size: 225px;
-    background-repeat: no-repeat;
-    transform: translateX(450px) translateY(40px) translateZ(8px);
-}
-#securityroom .wall2 #tv div {
-    width: 230px;
-    height: 150px;
-    background-image: url(assets/map/tv.png);
-    background-size: 230px;
-    background-repeat: no-repeat;
-    transform: translateX(-2.5px) translateY(-2.5px);
-}
-#securityroom .wall3 {
-    width: 450px;
-    height: 300px;
-    transform: translateY(600px) translateZ(150px) rotateX(-90deg) rotateY(180deg);
-}
-#securityroom .wall4 {
-    width: 750px;
-    height: 300px;
-    transform: translateX(75px) translateY(225px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
-}
-#securityroom .wall4 .leftwall {
-    width: 190px;
-    height: 300px;
-}
-#securityroom .wall4 #windowbutton.on {
-    width: 75px;
-    height: 75px;
-    background-image: url(assets/map/buttonon.png);
-    background-size: 75px;
-    transform: translateX(50px) translateY(120px);
-}
-#securityroom .wall4 #windowbutton.off {
-    width: 75px;
-    height: 75px;
-    background-image: url(assets/map/buttonoff.png);
-    background-size: 75px;
-    transform: translateX(50px) translateY(120px);
-}
-#securityroom .wall4 .upperwall {
-    width: 120px;
-    height: 200px;
-    transform: translateX(190px);
-}
-#securityroom .wall4 .rightwall {
-    width: 440px;
-    height: 300px;
-    transform: translateX(310px);
-}
-#securityroom .wall4 #duct {
-    width: 120px;
-    height: 100px;
-    transform: translateX(190px) translateY(200px);
-}
-#securityroom .wall4 #duct .duct {
-    width: 500px;
-    height: 100px;
-    background-image: url(assets/map/duct.png);
-    background-size: 250px;
-    background-repeat: repeat;
-}
-#securityroom .wall4 #duct .duct1 {
-    transform: translateX(-250px) translateZ(-250px) rotateY(90deg);
-}
-#securityroom .wall4 #duct .duct2 {
-    height: 120px;
-    transform: translateX(-190px) translateY(-60px) translateZ(-250px) rotateX(90deg) rotateZ(90deg);
-}
-#securityroom .wall4 #duct .duct3 {
-    transform: translateX(-130px) translateZ(-250px) rotateY(-90deg);
-}
-#securityroom .wall4 #duct .duct4 {
-    height: 120px;
-    transform: translateX(-190px) translateY(39.9px) translateZ(-250px) rotateX(90deg) rotateZ(90deg);
-}
-#securityroom .wall4 #duct .duct5 {
-    width: 120px;
-    height: 100px;
-    background-color: #000;
-    transform: translateZ(-500px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow {
-    width: 120px;
-    height: 100px;
-    background-color: #000;
-    opacity: 0.6;
-}
-#securityroom .wall4 #duct #ductshadows .shadow1 {
-    transform: translateZ(-50px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow2 {
-    transform: translateZ(-100px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow3 {
-    transform: translateZ(-150px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow4 {
-    transform: translateZ(-200px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow5 {
-    transform: translateZ(-250px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow6 {
-    transform: translateZ(-300px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow7 {
-    transform: translateZ(-350px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow8 {
-    transform: translateZ(-400px);
-}
-#securityroom .wall4 #duct #ductshadows .shadow9 {
-    transform: translateZ(-450px);
-}
-
-
-
-
-
-/* - - - - - - - - */
-#corridors .wall1 {
-    width: 1350px;
-    height: 300px;
-    transform: translateY(-150px) translateZ(150px) rotateX(-90deg);
-}
-#corridors .wall2 {
-    width: 1350px;
-    height: 300px;
-    transform: translateX(-675px) translateY(525px) translateZ(150px) rotateX(-90deg) rotateY(90deg);
-}
-#corridors .wall3 {
-    width: 1350px;
-    height: 300px;
-    transform: translateY(1200px) translateZ(150px) rotateX(-90deg) rotateY(180deg);
-}
-#corridors .wall4 {
-    width: 1350px;
-    height: 300px;
-    transform: translateX(1075px) translateY(125px) translateZ(150px) rotateX(-90deg) rotateY(-90deg);
-}
-#corridors .wall5 {
-    width: 1750px;
-    height: 300px;
-    transform: translateY(-550px) translateZ(150px) rotateX(-90deg);
-}
-
-
-
-
-
-/* - - - - - H A N D - - - - - */
-#hand {
-    position: fixed;
-    right: -270px;
-    bottom: -600px;
-    width: 800px;
-    height: 800px;
-    transform: scaleX(-1);
-    transition: 0.3s;
-}
-#hand.pointing {
-    background-image: url("assets/pointing.png");
-    background-size: 800px;
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-#hand.punching {
-    background-image: url("assets/punching.png");
-    background-size: 800px;
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-#flashlight {
-    position: fixed;
-    left: -270px;
-    bottom: -600px;
-    width: 800px;
-    height: 800px;
-    transform: scaleX(-1);
-    transition: 0.3s;
-    background-image: url("assets/flashlight.png");
-    background-size: 800px;
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-@keyframes flashlight-click {
-    0% {
-        transform: translateY(0px) scaleX(-1);
-    }
-    40% {
-        transform: translateY(10px) scaleX(-1);
-    }
-    100% {
-        transform: translateY(0px) scaleX(-1);
-    }
-}
-@keyframes punch-button {
-    0% {
-        right: -100px;
-        scale: 1;
-        transition: ease-in;
-    }
-    40% {
-        right: -100px;
-        scale: 0.8;
-        transition: ease-in-out;
-    }
-    45% {
-        scale: 1;
-        transition: ease-in;
-        bottom: 0;
-    }
-    70% {
-        right: -150px;
-        bottom: -600px;
-    }
-    80% {
-        right: -270px;
-        bottom: -600px;
-        transition: ease-in-out;
-    }
-    100% {
-        bottom: 0;
-    }
+#menuscreen button:hover h2 {
+    scale: 1.1;
 }

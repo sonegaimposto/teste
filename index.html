@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Night Shift</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="game.css">
     <link rel="shortcut icon" href="assets/logo.png">
     <script src="main.js" defer></script>
 
@@ -15,6 +16,30 @@
 
 
 <body>
+
+    <div id="loadingscreen">
+        <div>
+            <h2>NIGHT X</h2>
+            <h3>12:00 AM</h3>
+        </div>
+    </div>
+
+    <div id="menuscreen">
+        <span></span>
+        <h1>NIGHT SHIFT</h1>
+        <div id="menubuttons">
+            <button id="menu-newgame">
+                <h2>Novo Jogo</h2>
+            </button>
+            <button id="menu-select">
+                <h2>Selecionar noite</h2>
+            </button>
+            <button id="menu-customnight">
+                <h2>Custom Night</h2>
+            </button>
+        </div>
+        <div id="menuanimatronic"></div>
+    </div>
 
     <div id="camera">
 
@@ -75,6 +100,8 @@
                 <div class="wall4 walltexture2 shadowed"></div>
                 <div class="wall5 walltexture2 shadowed"></div>
             </div>
+
+            <div id="forgottenFreddy"></div>
         </div>
 
     </div>

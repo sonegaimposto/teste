@@ -1,4 +1,20 @@
 // DECLARAR VARIAVEIS
+
+const menuscreen = {
+    "background": document.getElementById("menuscreen"),
+    "animatronic": document.getElementById("menuanimatronic"),
+    "newgame": document.getElementById("menu-newgame"),
+    "selectnight": document.getElementById("menu-select"),
+    "customnight": document.getElementById("menu-customnight")
+}
+const loadingscreen = {
+    "background": document.getElementById("loadingscreen"),
+    "content": document.getElementById("loadingscreen").children[0],
+    "nightText": document.getElementById("loadingscreen").children[0].children[0]
+}
+
+var actualNight = 1;
+
 const camera = document.getElementById("camera");
 const hand = document.getElementById("hand");
 const flashlight = document.getElementById("flashlight");
@@ -12,8 +28,7 @@ var keys = [];
 var mouseX = 0;
 var mouseY = 0;
 var speed = 1.5;
-var freeMove = true;
-
+var freeMove = false;
 var playerPosition = "room";
 
 const door = {
@@ -64,6 +79,91 @@ const corridors = {
     "wall4": document.getElementById("corridors").children[3],
     "wall5": document.getElementById("corridors").children[4],
 }
+
+const forgottenFreddy = {
+    "element": document.getElementById("forgottenFreddy"),
+    "position": 0,
+    "poseList": {
+        "standing": "assets/animatronics/forgottenFreddy"
+    },
+    "actualPose": "",
+    "difficulty": 0,
+}
+
+const sounds = {
+    "menu": new Audio("assets/audio/menu.mp3"),
+    "loadingscreen": new Audio("assets/audio/loadingscreen.mp3"),
+    "ambience": new Audio("assets/audio/ambience.mp3"),
+    "ambienceLights": new Audio("assets/audio/ambiencelights.mp3"),
+    "doorsound": new Audio("assets/audio/doorsound.mp3"),
+    "alarm": new Audio("assets/audio/alarm.mp3"),
+    "animatronicdoor": new Audio("assets/audio/animatronicinthedoor.mp3"),
+    "flashlight": new Audio("assets/audio/flashlightbutton.mp3"),
+    "windowlight": new Audio("assets/audio/windowlight.mp3"),
+}
+sounds.menu.volume = 1;
+sounds.menu.loop = true;
+sounds.loadingscreen.volume = 1;
+sounds.ambience.volume = 0.25;
+sounds.ambience.loop = true;
+sounds.ambienceLights.volume = 0.15;
+sounds.ambienceLights.loop = true;
+sounds.doorsound.volume = 1;
+sounds.alarm.volume = 1;
+sounds.alarm.loop = true;
+sounds.animatronicdoor.volume = 1;
+sounds.flashlight.volume = 1;
+sounds.windowlight.volume = 1;
+sounds.windowlight.loop = true;
+
+
+
+
+
+// MENU
+sounds.menu.play();
+menuscreen.newgame.addEventListener("click", (event) => {
+    // Audio
+    sounds.menu.pause();
+    sounds.loadingscreen.play();
+    // Fechar o menu
+    menuscreen.background.style.opacity = 0;
+    menuscreen.background.style.top = "-100%";
+    // Aparecer tela de loading
+    loadingscreen.background.style.opacity = 1;
+    loadingscreen.background.style.top = "0%";
+    loadingscreen.nightText.innerHTML = `NIGHT ${actualNight}`;
+    loadingscreen.content.style.transition = "4s 1.5s";
+    loadingscreen.content.style.opacity = 0;
+    // Fechar tela de loading
+    setTimeout(() => {
+        loadingscreen.background.style.opacity = 0;
+        loadingscreen.background.style.top = "-100%";
+        // Setar animatronics
+        forgottenFreddy.difficulty = 3;
+        // Setar outras variaveis
+        freeMove = true;
+        // Começar timer e sons
+        sounds.ambience.play();
+        sounds.ambienceLights.play();
+    }, 7000);
+})
+menuscreen.selectnight.addEventListener("click", (event) => {
+
+})
+menuscreen.customnight.addEventListener("click", (event) => {
+
+})
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -182,27 +282,6 @@ camera.style.transform = `perspective(1000px) translateY(${y}px) translateZ(1000
 
 
 
-// AUDIOS
-const sounds = {
-    "ambience": new Audio("assets/audio/ambience.mp3"),
-    "ambienceLights": new Audio("assets/audio/ambiencelights.mp3"),
-    "doorsound": new Audio("assets/audio/doorsound.mp3"),
-    "alarm": new Audio("assets/audio/alarm.mp3"),
-    "animatronicdoor": new Audio("assets/audio/animatronicinthedoor.mp3"),
-    "flashlight": new Audio("assets/audio/flashlightbutton.mp3"),
-    "windowlight": new Audio("assets/audio/windowlight.mp3"),
-}
-sounds.ambience.volume = 0.25;
-sounds.ambience.loop = true;
-sounds.ambienceLights.volume = 0.15;
-sounds.ambienceLights.loop = true;
-sounds.doorsound.volume = 1;
-sounds.alarm.volume = 1;
-sounds.alarm.loop = true;
-sounds.animatronicdoor.volume = 1;
-sounds.flashlight.volume = 1;
-sounds.windowlight.volume = 1;
-sounds.windowlight.loop = true;
 
 
 
@@ -541,5 +620,24 @@ frontWindow.windowButton.addEventListener("click", event => {
 
 
 
-sounds.ambience.play();
-sounds.ambienceLights.play();
+
+
+
+
+
+
+
+
+
+
+// FORGOTTEN FREDDY
+forgottenFreddy.code = setInterval(() => {
+    if (forgottenFreddy.difficulty > 0) {
+
+        let RNG = Math.floor(Math.random() * 20 + 1);
+
+        if (forgottenFreddy.difficulty >= RNG && forgottenFreddy.position < 5) {
+            forgottenFreddy.position++
+        }
+    }
+}, 4000);
